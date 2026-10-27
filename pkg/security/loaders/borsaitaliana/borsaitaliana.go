@@ -49,6 +49,10 @@ func (b *QuoteLoader) LoadQuotes() ([]quotes.Quote, error) {
 
 	quotesData := []quotes.Quote{}
 	for _, quote := range result.Data {
+		// salta i prezzi a zero (es. titoli in collocamento non ancora negoziati)
+   		if quote[1] <= 0 {
+   			continue
+   		}
 		quotesData = append(quotesData, quotes.Quote{
 			Date:  time.Unix(int64(quote[0]/1000), 0).In(time.UTC),
 			Close: quote[1],
